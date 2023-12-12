@@ -36,7 +36,7 @@ qnr_expr_hbs <- ""
 qnr_expr_drb <- ""
 
 # =============================================================================
-# 03 - Check issues parameters
+# Describe how check issues program should behave
 # =============================================================================
 
 # Provide a comma-separated list of interview statuses to review.
