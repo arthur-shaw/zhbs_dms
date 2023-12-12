@@ -1,0 +1,5 @@
+# do not track downloads
+# zip files in root
+*.zip
+# folders of unpacked zip content
+*/*
