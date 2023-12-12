@@ -1,0 +1,303 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# zhbs_dms
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+## Objectives 🎯
+
+The data management system aims to automate several otherwise manual
+data operations:
+
+1.  Acquisition
+2.  Reporting
+3.  Processing
+
+For data acquisition, the system:
+
+- **Downloads.** For target questionnaire(s), obtains data for every
+  version (e.g., v1, v2, …, vN)
+- **Combines.** For each questionnaire, combines data from multiple
+  versions into a single set of data files containing all observations.
+- **Constructs.** For certain questionnaires, creates data files in more
+  convenient form than exported (e.g., a single file for food
+  consumption rather than one for each food group).
+
+For data reporting, the system:
+
+- **Inventories** the data received by primary sampling unit, flagging
+  cases with data shortfalls
+- **Monitors** trends in survey microdata that could undercut key survey
+  indicators
+- **Analyses** trends in survey paradata that could indicate problems
+  (e.g., short interviews, answer changes, etc.)
+
+For data processing, the system:
+
+- **Checks** for issues in incoming interview data.
+- **Recommends** what to do with each interview: approve, review,
+  reject, discuss with field staff due to persisent problems.
+- **Executes** the process for rejection, if desired. This entails
+- **Reports** on identified issues in two ways. First, by creating files
+  the flagged issues. Second, by generating a report of the top issues,
+  the top reasons for rejection, and the number of rejections.
+
+**NOTE:** as of 2023-12-12, only the data acquition and data processing
+functions have been implemented
+
+## Installation 💻🔌
+
+- [Install dependencies](#install-dependencies)
+- [Clone repository](#clone-repository)
+- [Provide parameters](#provide-parameters)
+
+<details>
+<summary>
+See detailed installation instructions 👁📑
+</summary>
+
+### Install dependencies
+
+Before running this program for the first time, (re)install the
+following software:
+
+- [R](#r)
+- [RTools](#rtools)
+- [RStudio](#rstudio)
+
+Even if these software packages are already installed, it is necessary
+to reinstall them in order to have the latest version of these tools for
+this program to work successfully.
+
+Please read below about how to install these programs.
+
+#### R
+
+- Follow this [link](https://cran.r-project.org/)
+- Click on the appropriate link for your operating system
+- Click on `base`
+- Download and install (e.g.,
+  [this](https://cran.r-project.org/bin/windows/base/R-4.3.2-win.exe)
+  for Windows)
+
+#### RTools
+
+Required for the Windows operating system.
+
+- Follow this [link](https://cran.r-project.org/)
+- Click on `Windows`
+- Click on `RTools`
+- Download
+  (e.g.,[this](https://cran.r-project.org/bin/windows/Rtools/rtools43/files/rtools43-5863-5818.exe)for
+  a 64bit system)
+- Install in the default installation location (e.g., `C:\rtools43` on
+  Windows)
+
+This program allows R to compile C++ scripts used by certain packages
+(e.g., `{dplyr}`).
+
+#### RStudio
+
+- Follow this [link](https://posit.co/products/open-source/rstudio/)
+- Click on the `DOWNLOAD RSTUDIO` button in the upper right-hand corner
+  of the page’s navbar
+- Click on the appropriate link for your operating system
+- Download and install (e.g.,
+  [this](https://download1.rstudio.org/electron/windows/RStudio-2023.09.1-494.exe)
+  for Windows)
+
+### Clone repository
+
+- Click on the `<> Code` button
+- Select the best method for copying the project from GitHub to your
+  device. For most, this will be the clicking on `Download ZIP`,
+  downloading, and unzipping.
+
+### Provide parameters
+
+#### Provide Survey Solutions connection details
+
+``` r
+server      <- "" # provide the complete URL of the server
+workspace   <- "" # use the name that is an ID rather than the display name
+user        <- "" # note: user must be either admin or API user
+password    <- "" # password of the user indicated above
+```
+
+#### Identify questionnaires whose data to fetch
+
+``` r
+# provide a string that uniquely identifies the questionnaire. this can be:
+# - full name
+# - sub-string
+# - regular expression
+
+# recall data
+qnr_expr_hbs <- ""
+
+# diary record book data
+qnr_expr_drb <- ""
+```
+
+#### Describe how check issues program should behave
+
+The program allows users to specify three types of behavior
+
+1.  Which interview statuses to consider
+2.  Which issues trigger rejection
+3.  Whether to reject interviews automatically
+
+##### Which interview statuses to consider
+
+``` r
+# Provide a comma-separated list of interview statuses to review.
+# See status values here: 
+# https://docs.mysurvey.solutions/headquarters/export/system-generated-export-file-anatomy/#coding_status
+#
+# Statuses supported by this script include: 
+# - Completed: 100
+# - ApprovedBySupervisor: 120
+# - ApprovedByHeadquarters: 130
+statuses_to_reject <- c(100, 120)
+```
+
+Here is what each interview status means in the the concrete survey
+workflow:
+
+| Status                 | Meaning                                                                         |
+|------------------------|---------------------------------------------------------------------------------|
+| Completed              | Marked as complete by an interviewer, but not yet processed by their supervisor |
+| ApprovedBySupervisor   | Approved by a supervisor, but not yet processed by headquarters                 |
+| ApprovedByHeadquarters | Approved by a headquarters                                                      |
+
+To have the check issues program act only as headquarters, set
+`statuses_to_reject <- c(120)`. This will instruct the program to review
+only those interviews that have been approved by a supervisor and, as
+such, are ready for headquarters review.
+
+To have the program act simultaneously as both supervisor and
+headquarters, set `statuses_to_reject <- c(100, 120)`. This default
+value enables the program to provide feedback on all completed
+interviews.
+
+##### Which issues trigger rejection
+
+``` r
+# Provide a comma-separated list of issue types to reject
+# {susoreview} uses the following codes:
+# - 1 = Reject
+# - 2 = Comment to post
+# - 3 = Survey Solutions validation error
+# - 4 = Review
+issues_to_reject <- c(1)
+```
+
+In the check issues program, issues may have different types. This
+parameter instructs the program which issues should give rise to
+rejection. Note that Survey Solutions validation errors are those errors
+flagged by Survey Solutions and that persist in the data. These latter
+issues could be minor or major.
+
+##### Whether to reject interviews automatically
+
+``` r
+# Whether to reject interviews recommended for rejection
+# - If TRUE, the program will instruct the server to reject these interviews.
+# - If FALSE, the program will not.
+# - In either case, the interviews recommended for rejection, 
+# and the reasons why, are saved in `/output/`
+should_reject <- FALSE
+```
+
+The check issues program recommends an action for each interview. For
+interviews recommended for rejection, the user can specify whether the
+program should automate the rejection of such interviews–that is,
+posting comments to those interviews and rejecting them back to the
+field for explanation and/or remediation.
+
+If the user selects `FALSE`, the program produces the necessary outputs
+to automate rejection later–potentially of the recommended interviews
+with additional, human-provided comments.
+
+</details>
+
+## Usage 👩‍💻
+
+- [Open the project](#open-the-project)
+- [Check for issues in the HBS recall
+  data](#check-for-issues-in-the-hbs-recall-data)
+- [Download the diary record book
+  data](#download-the-diary-record-book-data)
+
+<details>
+<summary>
+See detailed usage instructions 👓👩‍💻
+</summary>
+
+### Open the project
+
+Before taking any action, open the `zhbs_dms` project as a project. To
+do so, either open the project in RStudio or double-click on the
+`zhbs_dms.Rproj` file.
+
+Here, in more detail, is how to do each.
+
+To open the project from within RStudio:
+
+1.  Open RStudio
+2.  Click on `Project: (None)` in the upper right-hand corner
+3.  Select the project, by either
+
+- 1.  Opening the project file
+
+  - Click on `Open Project...`
+  - Navigate to `zhbs_dms.Rproj` in the file picker
+  - Select `zhbs_dms.Rproj`
+  - Click on `Open`
+
+- 2.  Selecting the project from the drop-down menu (if previously
+      opened)
+
+1.  Wait for RStudio to open the project
+
+To open the project from the `zhbs_dms.Rproj` file:
+
+1.  Open your file explorer
+2.  Navigate to the folder containing `zhbs_dms.Rproj`
+3.  Double-click on the file
+4.  Wait for RStudio to open the project
+
+### Check for issues in the HBS recall data
+
+After [opening the project](#open-the-project):
+
+- Open the `run_check_issues.R` file
+  - Move to the `Files` tab in RStudio
+  - Click on `run_check_issues.R`
+- Source the `run_check_issues.R` file
+  - Move to the script editor pane where `run_check_issues.R` is open
+  - Click on the `Source` button in the upper righthand corner
+
+Once execution has completed:
+
+- Data can be found in `01_get_data/data/hbs/02_combined/`
+- Output can be found in `03_check_issues/output/`
+
+### Download the diary record book data
+
+After [opening the project](#open-the-project):
+
+- Open the `get_diary_data.R` file
+  - Move to the `Files` tab in RStudio
+  - Click on `get_diary_data.R`
+- Source the `get_diary_data.R` file
+  - Move to the script editor pane where `get_diary_data.R` is open
+  - Click on the `Source` button in the upper righthand corner
+- Wait for execution to complete
+
+Once execution has completed, the diary data can be found in
+`01_get_data/data/drb/02_combined/`
+
+</details>
