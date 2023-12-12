@@ -30,10 +30,10 @@ susoapi::set_credentials(
 # - regular expression
 
 # recall data
-qnr_expr_hbs <- "Actual Pilot"
+qnr_expr_hbs <- ""
 
 # diary record book data
-qnr_expr_drb <- "Actual Pilot"
+qnr_expr_drb <- ""
 
 # =============================================================================
 # 03 - Check issues parameters
