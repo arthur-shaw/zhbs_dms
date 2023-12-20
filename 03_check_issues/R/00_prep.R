@@ -9,7 +9,7 @@ library(dplyr)
 # -----------------------------------------------------------------------------
 
 files <- c(
-    "ZiHBS_2023_Actual_pilot.dta",
+    main_file_name,
     "hhmembers.dta",
     "nfe_roster.dta",
     "Mod17_Crops.dta",
