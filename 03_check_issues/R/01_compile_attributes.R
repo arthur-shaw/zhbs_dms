@@ -170,9 +170,9 @@ attrib_use_electricity <- susoreview::create_attribute(
 
 attrib_toilet_on_sewer <- susoreview::create_attribute(
     df = households,
-    condition = M4_Q28 == 1,
+    condition = M4_30 == 1,
     attrib_name = "toilet_on_sewer",
-    attrib_vars = "M4_Q28"
+    attrib_vars = "M4_Q30"
 )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -228,7 +228,7 @@ attrib_owns_cell <- susoreview::create_attribute(
 # owns DVD player
 attrib_owns_dvd_player <- susoreview::create_attribute(
     df = households,
-    condition = M8_Q01__8 == 1,
+    condition = M8_Q01__6 == 1,
     attrib_name = "owns_dvd_player",
     attrib_vars = "M8_Q01"
 )
@@ -387,7 +387,7 @@ attrib_n_nf_m25b <- count_vars_nested(
 # water expenditure
 attrib_water_exp <- count_vars_nested(
     df = nf_mod25b,
-    var_pattern = "M25b_Q02_ItemList__20",
+    var_pattern = "M25b_Q02_ItemList__2[01]",
     attrib_name = "water_exp",
     attrib_vars = "M25b_Q02_ItemList",
 )
@@ -403,7 +403,7 @@ attrib_electricity_exp <- count_vars_nested(
 # pay for sewage
 attrib_sewage_exp <- count_vars_nested(
     df = nf_mod25b,
-    var_pattern = "M25b_Q02_ItemList__21",
+    var_pattern = "M25b_Q02_ItemList__24",
     attrib_name = "sewage_exp", 
     attrib_vars = "M25b_Q02_ItemList",
 )
