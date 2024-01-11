@@ -25,6 +25,7 @@ source(fs::path(data_dir, "R", "delete.R"))
 source(fs::path(data_dir, "R", "get.R"))
 source(fs::path(data_dir, "R", "unpack.R"))
 source(fs::path(data_dir, "R", "combine_and_save.R"))
+source(fs::path(data_dir, "R", "reconstruct_rosters.R"))
 
 # =============================================================================
 # Run scripts in order
