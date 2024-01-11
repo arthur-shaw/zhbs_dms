@@ -677,10 +677,11 @@ attrib_not_attend_bc_biz <- susoreview::any_obs(
 attrib_works_home_business <- susoreview::any_obs(
     df = members,
     where = (
-        # past 7 days
-        (M10_Q02 == 1 | M10_Q03 == 1) | (M10_Q08 == 1 | M10_Q11 == 1) |
-        # status in main job
-        (M10_Q27 %in% c(3, 4))
+        # in the past 7 days, ...
+        # run/do a business
+        (M10_Q02 == 1 | M10_Q07 == 1) |
+        # help in hhold business
+        (M10_Q03 == 1 | M10_Q10 == 1)
     ),
     attrib_name = "works_home_business",
     attrib_vars = "M10_Q0[238]|M10_Q11" 
