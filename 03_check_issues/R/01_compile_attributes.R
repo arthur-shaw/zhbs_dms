@@ -687,17 +687,6 @@ attrib_works_home_business <- susoreview::any_obs(
     attrib_vars = "M10_Q0[238]|M10_Q11" 
 )
 
-# any member own account worker or contributing family worker
-attrib_works_own_or_helps_hhbiz <- susoreview::any_obs(
-    df = members,
-    where = M10_Q20 %in% c(
-        1,  # works in own business
-        2   # works in household business
-    ),
-    attrib_name = "works_own_or_helps_hhbiz",
-    attrib_vars = "M10_Q20"
-)
-
 # any member retired
 attrib_retired_w_pension <- susoreview::any_obs(
     df = members,

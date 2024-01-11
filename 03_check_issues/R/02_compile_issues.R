@@ -304,29 +304,6 @@ issue_work_in_hhbiz_no_hhbiz <- susoreview::create_issue(
 )
 
 # -----------------------------------------------------------------------------
-# At least one member is an own account worker or contributing family worker, 
-# but no non-farm enterprise reported
-# -----------------------------------------------------------------------------
-
-issue_work_in_hh_biz_but_no_biz_2 <- susoreview::create_issue(
-    df_attribs = attribs,
-    vars = c("works_own_or_helps_hhbiz", "n_enterprises"),
-    where = works_own_or_helps_hhbiz == 1 & n_enterprises == 0,
-    type = 1,
-    desc = "Work in household business, but no business reported",
-    comment = paste0(
-        "ERROR: At least one member works in a household business, ",
-        "but no household business reported. ",
-        "In the employment module, at least one household member reports ",
-        "working in a household business as own account worker or contributor ",
-        "in the past 12 months. ",
-        "Meanwhile, in the non-farm enterprise module, no household ",
-        "business is reported. ",
-        "These things cannot be true at the same time. Please check and correct."
-    )   
-)
-
-# -----------------------------------------------------------------------------
 # Income from individuals and relatives outside Zimbabwe (non-labor income, q1 == 1 for item 16), 
 # but no former members in migration (international migration, q1.Length == 0)
 # -----------------------------------------------------------------------------
