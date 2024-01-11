@@ -161,11 +161,22 @@ attrib_water_from_network <- susoreview::create_attribute(
 attrib_use_electricity <- susoreview::create_attribute(
     df = households,
     condition = dplyr::if_any(
-        .cols = dplyr::matches("M4_Q08__[1-8]{1}"),
+        .cols = dplyr::matches("M4_Q08__[1-8]$"),
         .fns = ~ .x == 1
     ),
     attrib_name = "use_electricity",
-    attrib_vars = "M4_Q08__[1-8]"
+    attrib_vars = "M4_Q08__[1-8]$"
+)
+
+# note: target grid and mini-grid only
+attrib_use_grid_elec <- susoreview::create_attribute(
+    df = households,
+    condition = dplyr::if_any(
+        .cols = dplyr::matches("M4_Q08__[12]"),
+        .fns = ~ .x == 1
+    ),
+    attrib_name = "use_grid_elec",
+    attrib_vars = "M4_Q08__[12]"
 )
 
 attrib_toilet_on_sewer <- susoreview::create_attribute(
@@ -393,10 +404,11 @@ attrib_water_exp <- count_vars_nested(
 )
 
 # electricity expenditure
-attrib_electricity_exp <- count_vars_nested(
+# note: target grid and mini-grid expenditures only
+attrib_grid_electricity_exp <- count_vars_nested(
     df = nf_mod25b,
-    var_pattern = "M25b_Q02_ItemList__(2[5-9]$|3[01])",
-    attrib_name = "electricity_exp", 
+    var_pattern = "M25b_Q02_ItemList__2[8-9]",
+    attrib_name = "grid_electricity_exp", 
     attrib_vars = "M25b_Q02_ItemList",
 )
 

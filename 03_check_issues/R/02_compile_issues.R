@@ -438,8 +438,8 @@ issue_water_utility_no_exp <- susoreview::create_issue(
 
 issue_electricity_use_no_exp <- susoreview::create_issue(
     df_attribs = attribs,
-    vars = c("electricity_exp", "use_electricity"),
-    where = use_electricity == 1 & electricity_exp == 0,
+    vars = c("grid_electricity_exp", "use_gride_elec"),
+    where = use_grid_elec == 1 & grid_electricity_exp == 0,
     type = 1,
     desc = "Use electricity, but do not have any electricity expenditure",
     comment = paste(
