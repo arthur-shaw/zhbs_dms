@@ -317,7 +317,7 @@ food_df <- dplyr::bind_rows(food_dfs_renamed)
 
 # apply value labels to each variable
 # so that the output data frame uses comprehensive labels
-food_df <- apply_val_labels(
+food_df <- apply_value_labels(
     df = food_df,
     lbls = food_value_labels
 )
