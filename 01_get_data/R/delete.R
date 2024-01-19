@@ -36,14 +36,27 @@ fs::dir_delete(dirs_to_delete)
 # Combined data
 # -----------------------------------------------------------------------------
 
-# remove zip files
-dta_to_delete <- fs::dir_ls(
+# remove combined data files
+combined_to_delete <- fs::dir_ls(
     path = combined_dir,
     recurse = FALSE,
     type = "file",
     regexp = "\\.dta$"
 )
-fs::file_delete(dta_to_delete)
+fs::file_delete(combined_to_delete)
+
+# -----------------------------------------------------------------------------
+# Derived data
+# -----------------------------------------------------------------------------
+
+# remove combined data files
+derived_to_delete <- fs::dir_ls(
+    path = derived_dir,
+    recurse = FALSE,
+    type = "file",
+    regexp = "\\.dta$"
+)
+fs::file_delete(derived_to_delete)
 
 # =============================================================================
 # Purge output from past sessions
