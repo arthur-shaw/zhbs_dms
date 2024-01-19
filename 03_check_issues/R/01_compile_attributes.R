@@ -181,7 +181,7 @@ attrib_use_grid_elec <- susoreview::create_attribute(
 
 attrib_toilet_on_sewer <- susoreview::create_attribute(
     df = households,
-    condition = M4_30 == 1,
+    condition = M4_Q30 == 1,
     attrib_name = "toilet_on_sewer",
     attrib_vars = "M4_Q30"
 )
