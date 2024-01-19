@@ -1,4 +1,13 @@
 # =============================================================================
+# Define paths as a function of survey type
+# =============================================================================
+
+data_dir <- fs::path(here::here(), "01_get_data")
+downloaded_dir <- fs::path(data_dir, "data", survey_type, "01_downloaded")
+combined_dir <- fs::path(data_dir, "data", survey_type, "02_combined")
+derived_dir <- fs::path(data_dir, "data", survey_type, "03_derived")
+
+# =============================================================================
 # Purge stale data
 # =============================================================================
 
